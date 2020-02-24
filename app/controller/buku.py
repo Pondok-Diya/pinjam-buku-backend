@@ -2,9 +2,11 @@ from flask_restful import Resource
 from flask import request
 from app import app, db
 from datetime import datetime
+from flask_jwt_extended import jwt_required
 
 
 class DaftarBuku(Resource):
+    @jwt_required
     def get(self):
         """
         Mengeluarkan buku
