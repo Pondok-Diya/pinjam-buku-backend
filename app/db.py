@@ -40,11 +40,7 @@ class Database:
         try:
             con = self.koneksi()
             cur = con.cursor(pymysql.cursors.DictCursor)
-            hasil = cur.execute(sql,params)
-            print(hasil)
+            cur.execute(sql,params)
             con.commit()
+        finally:
             con.close()
-            return {'msg':'Sukses'}
-        except Exception as e:
-            self.app.logger.error(e,exc_info=True)
-            return {"msg":"terjadi kesalahan"},500
