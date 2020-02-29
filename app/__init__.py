@@ -16,4 +16,11 @@ api.representations.update({
     'application/json': custom_json_output
 })
 cors = CORS(app, resources={r"*": {"origins": "*"}})
+
+@jwt.token_in_blacklist_loader
+def check_token(decrypted_token):
+    jti = decrypted_token['jti']
+    sql = """select * from black_list_token where jti = %s"""
+    res = db.get_one(sql,[jti])
+    return bool(res)
 from app.router import route

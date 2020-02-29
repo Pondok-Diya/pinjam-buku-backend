@@ -2,9 +2,11 @@ from flask_restful import Resource
 from flask import request
 from app import app, db
 from datetime import datetime, timedelta
+from flask_jwt_extended import jwt_required
 
 
 class DaftarPeminjam(Resource):
+    @jwt_required
     def get(self):
         """
         Mengeluarkan peminjam
@@ -13,6 +15,7 @@ class DaftarPeminjam(Resource):
         return db.get_data(sql,[])
 
 class TambahPeminjam(Resource):
+    @jwt_required
     def post(self):
         now = datetime.now()
         stor = now + timedelta(days=3)
@@ -22,9 +25,11 @@ class TambahPeminjam(Resource):
         return db.commit_data(sql,params)
 
 class UpdatePeminjam(Resource):
+    @jwt_required
     def get(self,id):
         sql = """select * from peminjam where id = %s"""
         return db.get_one(sql,[id])
+    @jwt_required
     def put(self,id):
         now = datetime.now()
         data = request.get_json()
@@ -33,6 +38,7 @@ class UpdatePeminjam(Resource):
         return db.commit_data(sql,params)
 
 class HapusPeminjam(Resource):
+    @jwt_required
     def delete(self,id):
         sql = """delete from peminjam where id = %s"""
         return db.commit_data(sql,[id])

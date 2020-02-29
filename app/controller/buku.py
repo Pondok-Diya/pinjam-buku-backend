@@ -15,6 +15,7 @@ class DaftarBuku(Resource):
         return db.get_data(sql,[])
 
 class TambahBuku(Resource):
+    @jwt_required
     def post(self):
         """
         Menambahkan buku
@@ -26,9 +27,11 @@ class TambahBuku(Resource):
         return db.commit_data(sql,params)
 
 class UpdateBuku(Resource):
+    @jwt_required
     def get(self,id):
         sql = """select * from list_buku where id = %s"""
         return db.get_one(sql,[id])
+    @jwt_required
     def put(self,id):
         """
         Mengganti buku
@@ -38,6 +41,7 @@ class UpdateBuku(Resource):
         params = [data["judul"],data["genre"],data["penulis"],data["penerbit"],data["isbn"],datetime.now(),id]
         return db.commit_data(sql,params)
 class HapusBuku(Resource):
+    @jwt_required
     def delete(self,id):
         """
         Menghapus buku
