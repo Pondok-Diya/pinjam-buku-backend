@@ -41,7 +41,7 @@ class Login(Resource):
         try:
             if user != None:
                 if verify_hash(data["password"],user["password"]):
-                    access_token = create_access_token(identity=data["username"],expires_delta=timedelta(hours = 6))
+                    access_token = create_access_token(identity=data["username"],expires_delta=timedelta(minutes = 1))
                     refresh_token = ''
                     if data["rememberMe"]:
                         refresh_token = create_refresh_token(identity=data["username"])
@@ -62,7 +62,7 @@ class RefreshToken(Resource):
     @jwt_refresh_token_required
     def get(self):
         username = get_jwt_identity()
-        access_token = create_access_token(identity=username, expires_delta=timedelta(hours = 6))
+        access_token = create_access_token(identity=username, expires_delta=timedelta(minutes = 1))
         return {
             "username": username,
             "access_token": access_token
