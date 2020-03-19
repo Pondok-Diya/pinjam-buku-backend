@@ -27,8 +27,7 @@ class Registrasi(Resource):
             if checkingUser(data["username"]) == None:
                 sql = """insert user values (0, %s,%s,%s,%s,%s,%s)"""
                 params = [data["nama"],data["username"],data["email"],sha256.hash(data["password"]),datetime_now,datetime_now]
-                db.commit_data(sql,params)
-                return {"msg" : "Sukses"}
+                return db.commit_data(sql,params)
             return {"msg":"user exist"}
         except Exception as e:
             app.logger.error(e)
@@ -41,7 +40,7 @@ class Login(Resource):
         try:
             if user != None:
                 if verify_hash(data["password"],user["password"]):
-                    access_token = create_access_token(identity=data["username"],expires_delta=timedelta(minutes = 1))
+                    access_token = create_access_token(identity=data["username"],expires_delta=timedelta(minutes = 45))
                     refresh_token = ''
                     if data["rememberMe"]:
                         refresh_token = create_refresh_token(identity=data["username"])
@@ -62,7 +61,7 @@ class RefreshToken(Resource):
     @jwt_refresh_token_required
     def get(self):
         username = get_jwt_identity()
-        access_token = create_access_token(identity=username, expires_delta=timedelta(minutes = 1))
+        access_token = create_access_token(identity=username, expires_delta=timedelta(minutes = 45))
         return {
             "username": username,
             "access_token": access_token

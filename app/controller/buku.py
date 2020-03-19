@@ -22,8 +22,8 @@ class TambahBuku(Resource):
         """
         now = datetime.now()
         data = request.get_json()
-        sql = """insert into list_buku values(0,%s,%s,%s,%s,%s,%s,%s)"""
-        params = [data["judul"],data["genre"],data["penulis"],data["penerbit"],data["isbn"],now,now]
+        sql = """insert into list_buku values(0,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        params = [data["kode"],data["judul"],data["genre"],data["penulis"],data["ringkasan"],data["penerbit"],data["isbn"],now,now]
         return db.commit_data(sql,params)
 
 class UpdateBuku(Resource):
@@ -37,8 +37,8 @@ class UpdateBuku(Resource):
         Mengganti buku
         """
         data = request.get_json()
-        sql = """update list_buku set judul = %s, genre = %s, penulis = %s, penerbit = %s, isbn = %s, updated_at = %s where id = %s"""
-        params = [data["judul"],data["genre"],data["penulis"],data["penerbit"],data["isbn"],datetime.now(),id]
+        sql = """update list_buku set kode = %s, judul = %s, genre = %s, penulis = %s, ringkasan = %s, penerbit = %s, isbn = %s, updated_at = %s where id = %s"""
+        params = [data["kode"],data["judul"],data["genre"],data["penulis"],data["ringkasan"],data["penerbit"],data["isbn"],datetime.now(),id]
         return db.commit_data(sql,params)
 class HapusBuku(Resource):
     @jwt_required

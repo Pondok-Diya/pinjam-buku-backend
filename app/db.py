@@ -44,3 +44,4 @@ class Database:
             con.commit()
         finally:
             con.close()
+            return {"msg":"Sukses"}
